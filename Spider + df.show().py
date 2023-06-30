@@ -1,3 +1,4 @@
+# Databricks notebook source
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -24,17 +25,31 @@ data = {
     "top" : top,
     "List Header" : list_header,
     "Button" : button,
-    "Test" : "Test",
-    "Test" : "Test2",
-    "Test" : "Test3"
+    "Test" : "SoupTest",
 }
 
 # Unique file name with timestamp
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-dbfs_path = f"/tmp/test-folder/test2.json"
+dbfs_path = f"/tmp/crawl_{timestamp}.json"
 
 # Convert data dict to json
 json_data = json.dumps(data)
 
 # Save to dbfs
 dbutils.fs.put(dbfs_path, json_data, overwrite=True)
+
+
+# COMMAND ----------
+
+dbutils.fs.ls ("/tmp/")
+
+# COMMAND ----------
+
+# Grab your desired name value from your dir
+f = "/tmp/crawl_2023-06-30_21-10-37.json"
+df = spark.read.json(f)
+df.show()
+
+# COMMAND ----------
+
+

@@ -1,5 +1,7 @@
 ## Databricks Workbook: Segarra Web Scraper
-This workbook houses a Scrapy spider configured to extract pertinent data from "https://segarratech.com" and subsequently saves the collated data to the Databricks File System (DBFS). The data is then read into a PySpark DataFrame for further processing.
+This workbook houses a BeautifulSoup scraper configured to extract pertinent data from "https://segarratech.com" and subsequently saves the collated data to the Databricks File System (DBFS). The data is then read into a PySpark DataFrame for further processing.
+
+
 
 ---
 ## Table of Contents
@@ -22,28 +24,21 @@ Check the output: Post the run, you can verify the scraped data by viewing the D
 _Code Structure_ <a name="code-structure"></a>
 The workbook is divided into distinct cells.
 
-Cell 1: This cell includes the core scraping logic within the TestSpider class, which is a Scrapy spider. It extracts specific data from the target webpage.
+Cell 1: This cell includes the core scraping logic using BeautifulSoup. It extracts specific data from the target webpage and saves it as a JSON file in the DBFS.
 
-Cell 2: It's responsible for triggering a Scrapy CrawlerProcess and initiating the TestSpider.
+Cell 2: Lists all contents of the directory "/tmp/test-folder" in the DBFS.
 
-Cell 3: Lists all contents of the directory "/tmp/test-folder" in the DBFS.
+Cell 3: It reads the JSON file (containing scraped data) into a DataFrame and displays the same.
 
-Cell 4: It reads the JSON file (containing scraped data) into a DataFrame and displays the same.
-
-Cell 5: This cell initializes a new git repository for version control.
 
 ---
 _Features_ <a name="features"></a>
-- Scrapy Spider: The spider, named 'Segarra', navigates through "https://segarratech.com", gleans specific details, transforms this data into a JSON format, and saves the result as a JSON file in DBFS.
+- BeautifulSoup Scraper: The scraper navigates through "https://segarratech.com", gleans specific details, transforms this data into a JSON format, and saves the result as a JSON file in DBFS.
 - PySpark: The stored JSON data in DBFS is read into a PySpark DataFrame for subsequent processing.
-- Git: The notebook initiates a new git repository to enable version control.
 
 ---
-## Current error
-it seems the multiprocessing solution doesn't work properly in this scenario. However, it should be noted that using Scrapy within a Jupyter notebook has always been a bit of a challenge because Scrapy is built to run as a standalone application.
+_Version Control <a name="version-control"></a>
+As of now, the notebook does not contain any version control system. The user is advised to manually maintain different versions of the notebook for tracking purposes.
 
-As an alternative, it's recommended to refactor your code so that the Scrapy part runs as a standalone script. You can use this script as a data gathering stage, which produces a JSON file, for instance. Then, in your notebook, you can pick up the data by reading this JSON file.
-
-However, I understand this may not be the most desirable solution for you.
-
-As another alternative, you might consider using a different scraping framework that is more suited to use in a notebook environment like BeautifulSoup or Selenium. These tools don't use Twisted's Reactor and can therefore be run multiple times within the same notebook session without issues.
+## Current solution
+After facing challenges with the previous Scrapy implementation, the notebook has been revised to use BeautifulSoup for the web scraping task. This tool works more harmoniously in the notebook environment and can be run multiple times within the same session without issues. All web scraping operations are now contained within a single cell. Post scraping, the data is saved to DBFS as a JSON file and then read into a DataFrame.
