@@ -1,6 +1,7 @@
 ## Databricks Workbook: Segarra Web Scraper
 This workbook houses a Scrapy spider configured to extract pertinent data from "https://segarratech.com" and subsequently saves the collated data to the Databricks File System (DBFS). The data is then read into a PySpark DataFrame for further processing.
 
+---
 ## Table of Contents
 1. [Installation](#installation)
 2. [Usage](#Usage)
@@ -8,12 +9,15 @@ This workbook houses a Scrapy spider configured to extract pertinent data from "
 4. [Features](#Features)
 5. [Version Control](#Version-Control)
 
+---
 _Installation_ <a name="installation"></a>
 The notebook is designed to be run on Databricks. All you need to do is import the notebook into your Databricks workspace.
+
 ---
 _Usage_ <a name="usage"></a>
 Run the notebook: The whole notebook can be run in one go. It will execute the Segarra web scraper and generate a JSON file in DBFS housing the scraped data. The notebook will then read this data into a DataFrame.
 Check the output: Post the run, you can verify the scraped data by viewing the DataFrame created by the notebook.
+
 ---
 _Code Structure_ <a name="code-structure"></a>
 The workbook is divided into distinct cells.
