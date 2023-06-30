@@ -46,9 +46,15 @@ dbutils.fs.ls ("/tmp/")
 # COMMAND ----------
 
 # Grab your desired name value from your dir
-f = "/tmp/crawl_2023-06-30_21-10-37.json"
+f = "/tmp/crawl_2023-06-30_21-19-03.json"
 df = spark.read.json(f)
 df.show()
+
+# COMMAND ----------
+
+# Delete folders/files with this cell
+dbutils.fs.rm("/tmp/crawl_2023-06-30_21-19-03.json", recurse=True)
+
 
 # COMMAND ----------
 
