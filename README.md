@@ -42,3 +42,6 @@ As of now, the notebook does not contain any version control system. The user is
 
 ## Current solution
 After facing challenges with the previous Scrapy implementation, the notebook has been revised to use BeautifulSoup for the web scraping task. This tool works more harmoniously in the notebook environment and can be run multiple times within the same session without issues. All web scraping operations are now contained within a single cell. Post scraping, the data is saved to DBFS as a JSON file and then read into a DataFrame.
+
+## Current Problem
+I cannot import a local .env file in databricks and I am trying to NOT implement the secret feature or attach my local variables to my cluster. I want to figure out how to import a local .env file and it's variables for reusability and easy changes without directly impacting the infrastructure. This is so I can implement a "upload to s3" feature

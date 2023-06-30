@@ -2,9 +2,10 @@
 # Cell 1: Import required packages
 import os
 import boto3
-import .env.local
-# Cell 2: Load environment variables
-dbutils.secrets.mount('<secret-scope-name>', '<mount-point>')
+from dotenv import load_dotenv
+
+# load environment variables from .env.local
+load_dotenv('.env.local')
 
 
 # Cell 3: Initialize S3 client
