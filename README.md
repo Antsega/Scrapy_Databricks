@@ -37,3 +37,13 @@ _Features_ <a name="features"></a>
 - Scrapy Spider: The spider, named 'Segarra', navigates through "https://segarratech.com", gleans specific details, transforms this data into a JSON format, and saves the result as a JSON file in DBFS.
 - PySpark: The stored JSON data in DBFS is read into a PySpark DataFrame for subsequent processing.
 - Git: The notebook initiates a new git repository to enable version control.
+
+---
+## Current error
+it seems the multiprocessing solution doesn't work properly in this scenario. However, it should be noted that using Scrapy within a Jupyter notebook has always been a bit of a challenge because Scrapy is built to run as a standalone application.
+
+As an alternative, it's recommended to refactor your code so that the Scrapy part runs as a standalone script. You can use this script as a data gathering stage, which produces a JSON file, for instance. Then, in your notebook, you can pick up the data by reading this JSON file.
+
+However, I understand this may not be the most desirable solution for you.
+
+As another alternative, you might consider using a different scraping framework that is more suited to use in a notebook environment like BeautifulSoup or Selenium. These tools don't use Twisted's Reactor and can therefore be run multiple times within the same notebook session without issues.

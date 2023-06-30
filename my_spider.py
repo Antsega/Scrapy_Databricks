@@ -1,4 +1,3 @@
-# Databricks notebook source
 import scrapy
 from scrapy.crawler import CrawlerProcess
 from scrapy.linkextractors import LinkExtractor
@@ -6,6 +5,7 @@ from scrapy.spiders import CrawlSpider, Rule
 import json
 from datetime import datetime
 from pyspark.sql import SparkSession
+from multiprocessing import Process
 
 
 class TestSpider(scrapy.Spider):
@@ -27,7 +27,8 @@ class TestSpider(scrapy.Spider):
 
         # Unique file name with timestamp
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        dbfs_path = f"/tmp/test-folder/text_{timestamp}.json"
+        # dbfs_path = f"/tmp/test-folder/text_{timestamp}.json"
+        dbfs_path = f"/tmp/test-folder/test1.json"
         
         # Convert text list to json lines
         json_lines = ""
@@ -37,26 +38,17 @@ class TestSpider(scrapy.Spider):
         # Save to dbfs
         dbutils.fs.put(dbfs_path, json_lines, overwrite=True)
 
-# Instantiate a CrawlerProcess
-process = CrawlerProcess(settings={
-    "LOG_LEVEL":"CRITICAL",
-})
+# Define the function that will start our spider
+def run_spider(spider):
+    process = CrawlerProcess(settings={
+        "LOG_LEVEL": "CRITICAL",
+    })
+    process.crawl(spider)
+    process.start()
 
-# Start the spider
-process.crawl(TestSpider)
-process.start()  # the script will block here until the crawling is finished
+# Create a new process and start it
+p = Process(target=run_spider, args=(TestSpider,))
+p.start()
 
-
-# COMMAND ----------
-
-dbutils.fs.ls ("/tmp/test-folder")
-
-# COMMAND ----------
-
-f = "/tmp/test-folder/text_2023-06-30_18-42-42.json"
-df = spark.read.json(f)
-df.show()
-
-# COMMAND ----------
-
-
+# Wait for the process to finish
+p.join()
